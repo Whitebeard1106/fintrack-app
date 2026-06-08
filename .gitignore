@@ -1,0 +1,10 @@
+.env
+backend/.env
+__pycache__/
+*.pyc
+backend/venv/
+backend/.venv/
+backend/fintrack.db
+*.log
+.claude/
+frontend/index_backup*.html
