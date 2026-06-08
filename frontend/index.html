@@ -202,14 +202,15 @@ tbody td{padding:11px 16px;font-size:0.875rem}
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media(max-width:860px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto}.grid3,.grid2{grid-template-columns:1fr}.main{padding:1.4rem}}
 
-/* ── Lang dropdown ───────────────────────────────────────────────── */
-#langDropWrap{position:fixed;top:1rem;right:1.5rem;z-index:800}
-#langPill{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--soft);cursor:pointer;transition:border-color .15s,color .15s;font-family:'IBM Plex Mono',monospace;letter-spacing:.5px;box-shadow:var(--sh1)}
-#langPill:hover{border-color:var(--accent);color:var(--accent)}
-#langMenu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--sh2);overflow:hidden;min-width:80px}
-#langMenu button{display:block;width:100%;text-align:left;padding:8px 14px;font-size:0.83rem;font-weight:500;background:none;border:none;color:var(--soft);cursor:pointer;transition:background .12s;font-family:'IBM Plex Mono',monospace}
-#langMenu button:hover{background:var(--line2);color:var(--ink)}
-#langMenu button.active{color:var(--accent);font-weight:700}
+/* ── Top pills (lang + currency, fixed top-right) ────────────────── */
+#topPills{position:fixed;top:1rem;right:1.5rem;z-index:800;display:flex;gap:8px;align-items:center}
+#langDropWrap,#currDropWrap{position:relative}
+#langPill,#currPill{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--soft);cursor:pointer;transition:border-color .15s,color .15s;font-family:'IBM Plex Mono',monospace;letter-spacing:.5px;box-shadow:var(--sh1)}
+#langPill:hover,#currPill:hover{border-color:var(--accent);color:var(--accent)}
+#langMenu,#currMenu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--sh2);overflow:hidden;min-width:110px}
+#langMenu button,#currMenu button{display:block;width:100%;text-align:left;padding:8px 14px;font-size:0.83rem;font-weight:500;background:none;border:none;color:var(--soft);cursor:pointer;transition:background .12s;font-family:'IBM Plex Mono',monospace}
+#langMenu button:hover,#currMenu button:hover{background:var(--line2);color:var(--ink)}
+#langMenu button.active,#currMenu button.active{color:var(--accent);font-weight:700}
 
 /* ── Panel modal close ───────────────────────────────────────────── */
 .modal-close{background:transparent;border:none;font-size:1.1rem;color:var(--mute);cursor:pointer;padding:4px 8px;border-radius:6px;transition:background .15s,color .15s;line-height:1}
@@ -334,12 +335,21 @@ tbody td{padding:11px 16px;font-size:0.875rem}
 <div class="report" id="report"></div>
 <button class="fab" id="fab" title="AI">🤖</button>
 
-<!-- Lang dropdown pill (fixed top-right) -->
-<div id="langDropWrap">
-  <button id="langPill">EN ▾</button>
-  <div id="langMenu" style="display:none">
-    <button id="lang_ru">RU</button>
-    <button id="lang_en">EN</button>
+<!-- Top pills: currency + lang (fixed top-right) -->
+<div id="topPills">
+  <div id="currDropWrap" style="display:none">
+    <button id="currPill">сум ▾</button>
+    <div id="currMenu" style="display:none">
+      <button id="curr_uzs" data-cur="UZS">Узб. сум (UZS)</button>
+      <button id="curr_rub" data-cur="RUB">₽ Рубль (RUB)</button>
+    </div>
+  </div>
+  <div id="langDropWrap">
+    <button id="langPill">EN ▾</button>
+    <div id="langMenu" style="display:none">
+      <button id="lang_ru">RU</button>
+      <button id="lang_en">EN</button>
+    </div>
   </div>
 </div>
 
@@ -425,7 +435,7 @@ ru:{menuQuick:"⚡ Быстрый ввод",menuNew:"➕ Новая операц
   rPace:"При таком темпе к концу месяца ~",rTopMost:"Больше всего —",rGrew:"вырос на",rGrewTail:"к прошлому месяцу",
   rOverBudget:"Превышен бюджет по",rOf:"из",rReceived:"Получено:",rMonthBalance:"Баланс месяца:",
   weekdays:["Пн","Вт","Ср","Чт","Пт","Сб","Вс"],heatmap:"Календарь трат",
-  menuGoals:"🐷 Цели",goalsTitle:"Цели накоплений",goalsSection:"Цели накоплений",goalName:"Название цели",goalNamePh:"Отпуск",goalTarget:"Сумма цели",goalCreate:"Создать цель",goalAdd:"Пополнить",goalAddPh:"сумма",goalDelete:"Удалить",goalOf:"из",goalEnterName:"Введите название",goalEnterTarget:"Введите сумму цели",grpAdd:"Добавить",grpAnalytics:"Аналитика",grpSettings:"Настройки",secSections:"Разделы",navOverview:"📊 Обзор",navRates:"💱 Курсы валют",ratesTitle:"Курсы валют",ratesRefresh:"Обновить",ratesUpdating:"Обновление…",ratesAsOf:"на",ratesOfficialNote:"Официальный курс ЦБ РУз (не покупка/продажа в обменниках)",ratesError:"Не удалось обновить онлайн — показаны сохранённые данные.",ratesNever:"Курсы ещё не загружены. Нажмите «Обновить».",ratesHostHint:"Если онлайн-обновление не работает из локального файла — это ограничение браузера (CORS). Заработает, когда выложишь сайт онлайн.",colCcy:"Валюта",colRate:"Курс (сум)",colChange:"Δ за день",
+  menuGoals:"🐷 Цели",goalsTitle:"Цели накоплений",goalsSection:"Цели накоплений",goalName:"Название цели",goalNamePh:"Отпуск",goalTarget:"Сумма цели",goalCreate:"Создать цель",goalAdd:"Пополнить",goalAddPh:"сумма",goalDelete:"Удалить",goalOf:"из",goalEnterName:"Введите название",goalEnterTarget:"Введите сумму цели",grpAdd:"Добавить",grpAnalytics:"Аналитика",grpSettings:"Настройки",secSections:"Разделы",navOverview:"📊 Обзор",navRates:"💱 Курсы валют",ratesTitle:"Курсы валют",ratesRefresh:"Обновить",ratesUpdating:"Обновление…",ratesAsOf:"на",ratesOfficialNote:"Официальный курс ЦБ РУз (не покупка/продажа в обменниках)",ratesError:"Не удалось обновить онлайн — показаны сохранённые данные.",ratesNever:"Курсы ещё не загружены. Нажмите «Обновить».",ratesHostHint:"Если онлайн-обновление не работает из локального файла — это ограничение браузера (CORS). Заработает, когда выложишь сайт онлайн.",ratesBasedOn:"Курсы относительно: ",ratesCrossNote:"Данные: ЦБ Республики Узбекистан, пересчитаны кросс-курсом",colCcy:"Валюта",colRate:"Курс",colChange:"Δ за день",
   convTitle:"Конвертер",convFrom:"Из",convTo:"В",convAmtPh:"Сумма",convNoRates:"Загрузите курсы, нажав «Обновить»",
   authLogout:"Выйти",authEmailTitle:"Войти в FinTrack",authEmailDesc:"Введите email — пришлём 6-значный код для входа.",
   authCodeTitle:"Введите код",authCodeDesc:"Код отправлен на ",authCodeDesc2:". Проверьте консоль сервера.",
@@ -454,7 +464,7 @@ en:{menuQuick:"⚡ Quick add",menuNew:"➕ New entry",menuBudget:"🎯 Budgets",
   rPace:"At this pace, by month end ~",rTopMost:"Top —",rGrew:"up",rGrewTail:"vs last month",
   rOverBudget:"Budget exceeded for",rOf:"of",rReceived:"Received:",rMonthBalance:"Month balance:",
   weekdays:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],heatmap:"Spending calendar",
-  menuGoals:"🐷 Goals",goalsTitle:"Savings goals",goalsSection:"Savings goals",goalName:"Goal name",goalNamePh:"Vacation",goalTarget:"Target amount",goalCreate:"Create goal",goalAdd:"Add",goalAddPh:"amount",goalDelete:"Delete",goalOf:"of",goalEnterName:"Enter a name",goalEnterTarget:"Enter target amount",grpAdd:"Add",grpAnalytics:"Analytics",grpSettings:"Settings",secSections:"Sections",navOverview:"📊 Overview",navRates:"💱 Exchange rates",ratesTitle:"Exchange rates",ratesRefresh:"Refresh",ratesUpdating:"Updating…",ratesAsOf:"as of",ratesOfficialNote:"Official CBU rate (not the buy/sell rate at exchange offices)",ratesError:"Couldn't update online — showing saved data.",ratesNever:"Rates not loaded yet. Tap Refresh.",ratesHostHint:"If online updates don't work from a local file, that's a browser limit (CORS). It'll work once the site is hosted online.",colCcy:"Currency",colRate:"Rate (UZS)",colChange:"Δ day",
+  menuGoals:"🐷 Goals",goalsTitle:"Savings goals",goalsSection:"Savings goals",goalName:"Goal name",goalNamePh:"Vacation",goalTarget:"Target amount",goalCreate:"Create goal",goalAdd:"Add",goalAddPh:"amount",goalDelete:"Delete",goalOf:"of",goalEnterName:"Enter a name",goalEnterTarget:"Enter target amount",grpAdd:"Add",grpAnalytics:"Analytics",grpSettings:"Settings",secSections:"Sections",navOverview:"📊 Overview",navRates:"💱 Exchange rates",ratesTitle:"Exchange rates",ratesRefresh:"Refresh",ratesUpdating:"Updating…",ratesAsOf:"as of",ratesOfficialNote:"Official CBU rate (not the buy/sell rate at exchange offices)",ratesError:"Couldn't update online — showing saved data.",ratesNever:"Rates not loaded yet. Tap Refresh.",ratesHostHint:"If online updates don't work from a local file, that's a browser limit (CORS). It'll work once the site is hosted online.",ratesBasedOn:"Rates relative to: ",ratesCrossNote:"Source: Central Bank of Uzbekistan, cross-rate conversion",colCcy:"Currency",colRate:"Rate",colChange:"Δ day",
   convTitle:"Converter",convFrom:"From",convTo:"To",convAmtPh:"Amount",convNoRates:"Load rates by clicking Refresh",
   authLogout:"Sign out",authEmailTitle:"Sign in to FinTrack",authEmailDesc:"Enter your email — we'll send a 6-digit code.",
   authCodeTitle:"Enter the code",authCodeDesc:"Code sent to ",authCodeDesc2:". Check the server console.",
@@ -491,7 +501,28 @@ async function apiFetch(path, opts = {}) {
 async function handleApiError(r) {
   if (r.status !== 401) return false;
   localStorage.removeItem('ft_token'); localStorage.removeItem('ft_auth_user');
-  authUser = null; showAuth(1); return true;
+  authUser = null; updateCurrPill(); showAuth(1); return true;
+}
+async function changeCurrency(newCur) {
+  if (!authUser) return;
+  const r = await apiFetch('/auth/me', { method: 'PUT', body: JSON.stringify({
+    name: authUser.name, surname: authUser.surname,
+    date_of_birth: authUser.date_of_birth || '', currency: newCur
+  })});
+  if (await handleApiError(r)) return;
+  if (r.ok) {
+    authUser = await r.json();
+    localStorage.setItem('ft_auth_user', JSON.stringify(authUser));
+    updateCurrPill(); renderGreeting(); render();
+  }
+}
+function updateCurrPill() {
+  const wrap = document.getElementById('currDropWrap');
+  if (!authUser) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  document.getElementById('currPill').textContent = getCurrencySymbol() + ' ▾';
+  document.querySelectorAll('#currMenu button').forEach(b =>
+    b.classList.toggle('active', b.dataset.cur === (authUser.currency || 'UZS')));
 }
 async function loadServerData() {
   const [rTx, rBg, rGl] = await Promise.all([
@@ -725,24 +756,46 @@ function renderRates(){
         ${state._ratesError?`<p style="color:var(--mute);font-size:0.8rem;margin-top:8px">${D.ratesHostHint}</p>`:''}</div>`;
     document.getElementById('rt_refresh').onclick=fetchRates; return;
   }
-  const list=[...state.rates.list]
-    .filter(c=>MAJOR.includes(c.ccy))
-    .sort((a,b)=>MAJOR.indexOf(a.ccy)-MAJOR.indexOf(b.ccy));
-  const rows=list.map(c=>{
-    const diff=parseFloat(c.diff)||0;
-    const dc=diff>0?'var(--green)':diff<0?'var(--red)':'var(--mute)';
-    const arrow=diff>0?'▲':diff<0?'▼':'•';
-    const nom=(c.nominal&&+c.nominal!==1)?`${c.nominal} `:'';
-    const name=state.lang==='en'?c.nameEn:c.nameRu;
-    return `<tr><td style="font-weight:600">${nom}${c.ccy}<div style="font-weight:400;color:var(--mute);font-size:0.78rem">${esc(name||'')}</div></td>
-      <td class="right num" style="font-weight:600">${fmtRate(c.rate)}</td>
-      <td class="right num" style="color:${dc}">${arrow} ${fmtRate(Math.abs(diff))}</td></tr>`;
+  const baseCcy = authUser?.currency || 'UZS';
+  const baseSymbol = CURRENCIES[baseCcy]?.symbol || baseCcy;
+  const SHOW_RATES = ['USD','EUR','RUB','KZT','CNY','UZS'].filter(c => c !== baseCcy);
+  const uzsPerBase = (() => {
+    if (baseCcy === 'UZS') return 1;
+    const e = state.rates.list.find(x => x.ccy === baseCcy);
+    return e ? parseFloat(e.rate) / parseFloat(e.nominal) : null;
+  })();
+  const rows = SHOW_RATES.map(ccy => {
+    let entry, nom, displayRate, diffCell = '<span style="color:var(--mute)">—</span>';
+    if (ccy === 'UZS') {
+      nom = 1000;
+      displayRate = uzsPerBase ? 1000 / uzsPerBase : null;
+      entry = {nameRu:'Узбекский сум', nameEn:'Uzbek som'};
+    } else {
+      entry = state.rates.list.find(x => x.ccy === ccy);
+      if (!entry) return '';
+      nom = parseFloat(entry.nominal) || 1;
+      const uzsPerCcy = parseFloat(entry.rate) / nom;
+      displayRate = uzsPerBase ? uzsPerCcy / uzsPerBase * nom : null;
+      if (baseCcy === 'UZS') {
+        const diff = parseFloat(entry.diff) || 0;
+        const dc = diff>0?'var(--green)':diff<0?'var(--red)':'var(--mute)';
+        const arrow = diff>0?'▲':diff<0?'▼':'•';
+        diffCell = `<span style="color:${dc}">${arrow} ${fmtRate(Math.abs(diff))}</span>`;
+      }
+    }
+    const nomStr = nom !== 1 ? `${nom} ` : '';
+    const rateStr = displayRate != null ? fmtRate(displayRate) : '—';
+    const name = state.lang==='en' ? entry.nameEn : entry.nameRu;
+    return `<tr><td style="font-weight:600">${nomStr}${ccy}<div style="font-weight:400;color:var(--mute);font-size:0.78rem">${esc(name||'')}</div></td>
+      <td class="right num" style="font-weight:600">${rateStr}</td>
+      <td class="right num">${diffCell}</td></tr>`;
   }).join('');
   wrap.innerHTML=`
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap">
       <button class="btn-primary" id="rt_refresh" style="width:auto;padding:9px 16px">${D.ratesRefresh}</button>
       <span style="color:var(--mute);font-size:0.82rem">${D.ratesAsOf} ${state.rates.date||''}</span>
       ${state._ratesError?`<span style="color:var(--red);font-size:0.8rem">${D.ratesError}</span>`:''}</div>
+    <p style="color:var(--soft);font-size:0.82rem;margin-bottom:14px">📊 ${D.ratesBasedOn}<b>${baseSymbol}</b></p>
     <div class="card pad fade" style="margin-bottom:14px">
       <div class="section" style="margin-bottom:14px">${D.convTitle}</div>
       <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
@@ -762,9 +815,9 @@ function renderRates(){
       <div id="cv_result" style="margin-top:14px;min-height:2rem"></div>
     </div>
     <div class="card fade"><table><thead><tr>
-      <th>${D.colCcy}</th><th class="right">${D.colRate}</th><th class="right">${D.colChange}</th>
+      <th>${D.colCcy}</th><th class="right">${D.colRate} (${baseSymbol})</th><th class="right">${baseCcy==='UZS'?D.colChange:'Δ'}</th>
     </tr></thead><tbody>${rows}</tbody></table></div>
-    <p style="color:var(--mute);font-size:0.8rem;margin-top:12px">ℹ️ ${D.ratesOfficialNote}</p>`;
+    <p style="color:var(--mute);font-size:0.8rem;margin-top:12px">ℹ️ ${D.ratesCrossNote}</p>`;
   document.getElementById('cv_from').value='USD';
   document.getElementById('cv_to').value='UZS';
   document.getElementById('rt_refresh').onclick=fetchRates;
@@ -911,18 +964,9 @@ function renderPanel(){
       <button class="btn-ghost" id="d_exp" style="margin-top:0">${t('exportBtn')}</button>
       <div class="toast" style="background:var(--line2);color:var(--soft);margin-top:12px">${t('dataNote')}</div>`;
     document.getElementById('d_cur_save').onclick = async () => {
-      const newCur = document.getElementById('d_cur').value;
-      const r = await apiFetch('/auth/me', { method: 'PUT', body: JSON.stringify({
-        name: authUser.name, surname: authUser.surname,
-        date_of_birth: authUser.date_of_birth || '', currency: newCur
-      })});
-      if (await handleApiError(r)) return;
-      if (r.ok) {
-        authUser = await r.json();
-        localStorage.setItem('ft_auth_user', JSON.stringify(authUser));
-        document.getElementById('d_cur_status').textContent = t('currencySaved');
-        renderGreeting(); render();
-      }
+      await changeCurrency(document.getElementById('d_cur').value);
+      const st = document.getElementById('d_cur_status');
+      if (st) st.textContent = t('currencySaved');
     };
     document.getElementById('d_exp').onclick=()=>{
       const blob=new Blob([JSON.stringify({tx:state.tx,budgets:state.budgets,goals:state.goals},null,2)],{type:'application/json'});
@@ -1108,10 +1152,12 @@ function renderGreeting() {
     chip.innerHTML = `<div class="pc-name">${esc(authUser.name)}${authUser.surname ? ' ' + esc(authUser.surname) : ''}</div>
       <div class="pc-mail">${esc(authUser.email)}</div>
       <button class="btn-ghost" id="pc_logout" style="margin-top:8px">${t('authLogout')}</button>`;
+    updateCurrPill();
     document.getElementById('pc_logout').onclick = () => {
       localStorage.removeItem('ft_token');
       localStorage.removeItem('ft_auth_user');
       authUser = null;
+      updateCurrPill();
       showAuth(1);
     };
   } else { h.textContent = t('tagline'); chip.innerHTML = ''; }
@@ -1207,6 +1253,9 @@ function applyLang(lang){
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder=D[el.dataset.i18nPh]; });
   document.getElementById('langPill').textContent = lang==='ru'?'RU ▾':'EN ▾';
   document.querySelectorAll('#langMenu button').forEach(b=>b.classList.toggle('active',b.id==='lang_'+lang));
+  const _cuUzs=document.getElementById('curr_uzs'), _cuRub=document.getElementById('curr_rub');
+  if(_cuUzs){_cuUzs.textContent=D.currencyUZS;_cuRub.textContent=D.currencyRUB;}
+  updateCurrPill();
   const dark=document.body.getAttribute('data-theme')==='dark';
   document.getElementById('themeToggle').textContent = dark?D.themeLight:D.themeDark;
   renderGreeting(); render();
@@ -1216,7 +1265,12 @@ const langMenuEl = document.getElementById('langMenu');
 langPillBtn.onclick = e => { e.stopPropagation(); langMenuEl.style.display = langMenuEl.style.display==='none'?'block':'none'; };
 document.getElementById('lang_ru').onclick = () => { applyLang('ru'); langMenuEl.style.display='none'; };
 document.getElementById('lang_en').onclick = () => { applyLang('en'); langMenuEl.style.display='none'; };
-document.addEventListener('click', () => { langMenuEl.style.display='none'; });
+const currPillBtn = document.getElementById('currPill');
+const currMenuEl = document.getElementById('currMenu');
+currPillBtn.onclick = e => { e.stopPropagation(); currMenuEl.style.display = currMenuEl.style.display==='none'?'block':'none'; };
+document.getElementById('curr_uzs').onclick = () => { changeCurrency('UZS'); currMenuEl.style.display='none'; };
+document.getElementById('curr_rub').onclick = () => { changeCurrency('RUB'); currMenuEl.style.display='none'; };
+document.addEventListener('click', () => { langMenuEl.style.display='none'; currMenuEl.style.display='none'; });
 
 // ── Boot ──────────────────────────────────────────────────────────
 (function(){const p=JSON.parse(localStorage.getItem('ft_fab')||'null');if(p&&p.left&&p.top){fab.style.left=p.left;fab.style.top=p.top;fab.style.right='auto';fab.style.bottom='auto';}})();
