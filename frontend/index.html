@@ -722,7 +722,7 @@ function renderGoals(){
   }
   wrap.innerHTML=`<div class="section">${t('goalsSection')}</div><div class="card pad fade" style="padding-bottom:.4rem">${bars}</div><div class="spacer"></div>`;
 }
-const MAJOR=['USD','EUR','JPY','GBP','CNY','KZT','RUB'];
+const MAJOR=['USD','EUR','JPY','GBP','CNY','KZT','RUB','TRY'];
 function fmtRate(v){
   const n=parseFloat(v); if(isNaN(n)) return v;
   return n.toLocaleString(state.lang==='en'?'en-US':'ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -758,7 +758,7 @@ function renderRates(){
   }
   const baseCcy = authUser?.currency || 'UZS';
   const baseSymbol = CURRENCIES[baseCcy]?.symbol || baseCcy;
-  const SHOW_RATES = ['USD','EUR','RUB','KZT','CNY','UZS'].filter(c => c !== baseCcy);
+  const SHOW_RATES = ['USD','EUR','RUB','TRY','KZT','CNY','UZS'].filter(c => c !== baseCcy);
   const uzsPerBase = (() => {
     if (baseCcy === 'UZS') return 1;
     const e = state.rates.list.find(x => x.ccy === baseCcy);
