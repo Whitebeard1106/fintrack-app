@@ -723,6 +723,19 @@ function renderGoals(){
   wrap.innerHTML=`<div class="section">${t('goalsSection')}</div><div class="card pad fade" style="padding-bottom:.4rem">${bars}</div><div class="spacer"></div>`;
 }
 const MAJOR=['USD','EUR','JPY','GBP','CNY','KZT','RUB','TRY'];
+const CCY_META={
+  USD:{sym:'$', ru:'Доллар США',       en:'US Dollar'},
+  EUR:{sym:'€', ru:'Евро',             en:'Euro'},
+  RUB:{sym:'₽', ru:'Российский рубль', en:'Russian ruble'},
+  TRY:{sym:'₺', ru:'Турецкая лира',    en:'Turkish lira'},
+  KZT:{sym:'₸', ru:'Казахстанский тенге',en:'Kazakhstani tenge'},
+  CNY:{sym:'¥', ru:'Китайский юань',   en:'Chinese yuan'},
+  JPY:{sym:'¥', ru:'Японская иена',    en:'Japanese yen'},
+  GBP:{sym:'£', ru:'Британский фунт',  en:'British pound'},
+  UZS:{sym:'сум',ru:'Узбекский сум',   en:'Uzbek som'},
+};
+function ccyName(ccy){ return CCY_META[ccy]?.[state.lang==='en'?'en':'ru'] || ccy; }
+function ccySym(ccy){ return CCY_META[ccy]?.sym || ccy; }
 function fmtRate(v){
   const n=parseFloat(v); if(isNaN(n)) return v;
   return n.toLocaleString(state.lang==='en'?'en-US':'ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -743,7 +756,7 @@ async function fetchRates(){
 function renderRates(){
   const wrap=document.getElementById('viewRates'), D=T[state.lang];
   const convCcys=['UZS',...MAJOR];
-  const ccyOpts=convCcys.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const ccyOpts=convCcys.map(c=>`<option value="${c}">${c} ${ccySym(c)}</option>`).join('');
   if(!state.rates){
     wrap.innerHTML=`
       <div class="card pad fade" style="margin-bottom:14px">
@@ -785,8 +798,9 @@ function renderRates(){
     }
     const nomStr = nom !== 1 ? `${nom} ` : '';
     const rateStr = displayRate != null ? fmtRate(displayRate) : '—';
-    const name = state.lang==='en' ? entry.nameEn : entry.nameRu;
-    return `<tr><td style="font-weight:600">${nomStr}${ccy}<div style="font-weight:400;color:var(--mute);font-size:0.78rem">${esc(name||'')}</div></td>
+    const name = (state.lang==='en' ? entry.nameEn : entry.nameRu) || ccyName(ccy);
+    const sym = ccySym(ccy);
+    return `<tr><td style="font-weight:600">${nomStr}${ccy} <span style="color:var(--mute);font-weight:400">${sym}</span><div style="font-weight:400;color:var(--mute);font-size:0.78rem">${esc(name)}</div></td>
       <td class="right num" style="font-weight:600">${rateStr}</td>
       <td class="right num">${diffCell}</td></tr>`;
   }).join('');
@@ -840,7 +854,7 @@ function renderRates(){
     const loc=state.lang==='en'?'en-US':'ru-RU';
     const fmtRes=(n)=>n.toLocaleString(loc,{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
     const amtDisplay=amount.toLocaleString(loc);
-    res.innerHTML=`<span style="font-size:0.76rem;color:var(--mute);display:block;margin-bottom:3px">${amtDisplay} ${from} =</span><span class="num" style="font-size:1.45rem;font-weight:700;color:var(--accent)">${fmtRes(result)}</span> <span style="color:var(--soft);font-size:0.9rem;font-weight:500">${to}</span>`;
+    res.innerHTML=`<span style="font-size:0.76rem;color:var(--mute);display:block;margin-bottom:3px">${amtDisplay} ${from} ${ccySym(from)} =</span><span class="num" style="font-size:1.45rem;font-weight:700;color:var(--accent)">${fmtRes(result)}</span> <span style="color:var(--soft);font-size:0.9rem;font-weight:500">${ccySym(to)} ${ccyName(to)}</span>`;
   };
   document.getElementById('cv_amt').oninput=calcConv;
   document.getElementById('cv_from').onchange=calcConv;
